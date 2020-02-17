@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Databinding_E_game
     {
         private Game currentGame;
 
-        public List<Game> games { get; set; }
+        public ObservableCollection<Game> games { get; set; }
         private int maxIndex;
 
         public Game CurrentGame {
@@ -41,7 +42,7 @@ namespace Databinding_E_game
 
         public MainWindow()
         {
-            games = new List<Game>()
+            games = new ObservableCollection<Game>()
             {
                 new Game {Title = "Super Mario Bros.",
                     Console="Switch", CoverPath="images/super_mario.png",
@@ -62,8 +63,12 @@ namespace Databinding_E_game
 
             CurrentGame = games[0];
             MaxIndex = games.Count - 1;
+            games[0].Info = games[0].Title+" : "+games[0].Description;
+            games[1].Info = games[1].Title + " : " + games[1].Description;
+            games[2].Info = games[2].Title + " : " + games[2].Description;
 
             InitializeComponent();
+            cbbox.SelectedIndex = 0;
 
         }
 
@@ -87,6 +92,14 @@ namespace Databinding_E_game
 
             CurrentGame = games[newIndex];
 
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int newIndex = lstview.SelectedIndex;
+
+            CurrentGame = games[newIndex];
+            cbbox.SelectedIndex = newIndex;
         }
     }
 }
